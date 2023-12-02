@@ -21,3 +21,14 @@ cat data/day1.txt | ./scripts/day01_1.sh
 # or
 ./scripts/day01_1.sh data/day1.txt
 ```
+
+## Measure execution time
+
+Use `time`, like so:
+
+```bash
+$ time ./scripts/day02_01.sh data/day2.txt
+real    0m0.021s
+user    0m0.016s
+sys     0m0.000s
+```
