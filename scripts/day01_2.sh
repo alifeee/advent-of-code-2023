@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# https://adventofcode.com/2023/day/1
+
 # cat $1 | sed s/one/1/g | sed s/two/2/g | sed s/three/3/g | sed s/four/4/g | sed s/five/5/g | sed s/six/6/g | sed s/seven/7/g | sed s/eight/8/g | sed s/nine/9/g
 
 # cat $1 | sed -E 's/(zero|one|two|three|four|five|six|seven|eight|nine)/__\1__/g'

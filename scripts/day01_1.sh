@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# https://adventofcode.com/2023/day/1 
+
 # cat $1 | awk '{ sum += $1 }; END { print sum }'
 # cat $1 | awk '{ print "lll" }; {print}; /[0-9]/ { print }'
 # cat $1 | awk '{ sum++ }; END {print sum}'
