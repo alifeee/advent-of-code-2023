@@ -6,9 +6,9 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 
 ## Other people's solutions
 
-| Check out! |
-| --- |
-| [jedevc](https://github.com/jedevc/advent-of-code-2023/) |
+| Check out! | these! |
+| --- | --- |
+| [jedevc](https://github.com/jedevc/advent-of-code-2023/) | [lavigne958](https://github.com/lavigne958/Adventofcode2023) |
 
 ## To run
 
