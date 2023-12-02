@@ -8,10 +8,7 @@ BLUES="${BLUES:=14}"
 
 # cat $1 | awk -F'[:;]' 'BEGIN { maxreds="'"$REDS"'"; maxgreens="'"$GREENS"'"; maxblues="'"$BLUES"'" } { print "> " $0 } { print $1 } match($1,/[0-9]+/) { game = substr($1,RSTART, RLENGTH) } { print game } '
 
-cat $1 | awk -F'[:;]' 'match($1,/[0-9]+/) {
-    game = substr($1,RSTART, RLENGTH)
-} {
-    maxred = 0; maxgreen = 0; maxblue = 0;
+cat $1 | awk -F'[:;]' 'match($1,/[0-9]+/) { game = substr($1,RSTART, RLENGTH) } { maxred = 0; maxgreen = 0; maxblue = 0;
     for(i=2;i<=NF;i++) {
         reds = match($i, /([0-9]+) red/, arr);
         if (reds != 0 && maxred<arr[1]) maxred = arr[1];
@@ -20,6 +17,4 @@ cat $1 | awk -F'[:;]' 'match($1,/[0-9]+/) {
         blues = match($i, /([0-9]+) blue/, arr);
         if (blues != 0 && maxblue<arr[1]) maxblue= arr[1];
     }
-} {
-    print game "," maxred "," maxgreen "," maxblue;
-}' | awk -F',' 'BEGIN { maxreds='"$REDS"'; maxgreens='"$GREENS"'; maxblues='"$BLUES"' } { if ( ($2 <= maxreds) && ($3 <= maxgreens) && ($4 <= maxblues) ) sum += $1 } END { print sum }'
+} { print game "," maxred "," maxgreen "," maxblue; }' | tee >(awk -F',' 'BEGIN { maxreds='"$REDS"'; maxgreens='"$GREENS"'; maxblues='"$BLUES"' } { if ( ($2 <= maxreds) && ($3 <= maxgreens) && ($4 <= maxblues) ) sum += $1 } END { print "part 1: " sum }' > /dev/tty) | awk -F',' '{ power = $2*$3*$4 } { total += power } END { print "part 2: " total }'
