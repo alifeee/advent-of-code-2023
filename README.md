@@ -4,6 +4,12 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 
 <https://adventofcode.com/2023>
 
+## Other people's solutions
+
+| Check out! | these! |
+| --- | --- |
+| [jedevc](https://github.com/jedevc/advent-of-code-2023/) | [lavigne958](https://github.com/lavigne958/Adventofcode2023) |
+
 ## To run
 
 ### Bash solutions
