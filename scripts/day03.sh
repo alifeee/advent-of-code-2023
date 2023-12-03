@@ -32,7 +32,6 @@ cat $1 | awk 'BEGIN {
         if (i==0) print " symbols from previous line";
         print "  " prevsymbols[i] " (" prevsymbols_starts[i] "-" prevsymbols_ends[i] ")";
     }
-    print "prevnums" "(" length(prevnums) ")"
     for (i=0; i<length(prevnums); i++) {
         if (i==0) print " nums from previous line";
         print "  " prevnums[i] " (" prevnums_starts[i] "-" prevnums_ends[i] ")";
@@ -61,14 +60,17 @@ cat $1 | awk 'BEGIN {
             isnexttosymbol=1;
         } else if (debug)  print "    no"
         if (isnexttosymbol) {
-            print "   found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
+            print "    found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
             sum += numarr[numindex];
             continue;
         }
         
+        if (length(prevsymbols) == 0) {
+            if (debug) print "   no prev symbols, continuing"
+        }
         isnearprevsymbol = 0;
         for (si=0; si<length(prevsymbols); si++) {
-            if (debug) print "   is near " prevsymbols[si] " (" prevsymbols_starts[si] "-" prevsymbols_ends[si] ") ?";
+            if (debug) print "   is near " prevsymbols[si] " [" prevsymbols_starts[si] "-" prevsymbols_ends[si] "] ?";
             a = istartat;
             b = iendat;
             x = prevsymbols_starts[si];
@@ -84,7 +86,7 @@ cat $1 | awk 'BEGIN {
             continue;
         }
 
-        if (debug) print "  adding number to nextnums"
+        if (debug) print "   adding number to nextnums"
         nextnums[length(nextnums)] = numarr[numindex];
         nextnums_starts[length(nextnums_starts)] = istartat;
         nextnums_ends[length(nextnums_ends)] = iendat;        
@@ -111,13 +113,14 @@ cat $1 | awk 'BEGIN {
             if (debug) print "   no prev nums, continuing"
         }
         for (ni=0; ni<length(prevnums); ni++) {
-            if (debug) print "   is near " prevnums[ni] " [" prevnums_starts[ni] "-" prevnums_ends[ni] ") ?";
-            a = istartat;
-            b = iendat;
-            x = prevnums_starts[ni];
-            y = prevnums_ends[ni];
+            if (debug) print "   is near " prevnums[ni] " [" prevnums_starts[ni] "-" prevnums_ends[ni] "] ?";
+            x = istartat;
+            y = iendat;
+            a = prevnums_starts[ni];
+            b = prevnums_ends[ni];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
-                if (debug) print "    yes!"
+                if (debug) print "    yes!";
+                print "    found number on prev line, sum = " sum " + " prevnums[ni] ". Setting num to 0.";
                 sum += prevnums[ni];
                 # nullify num being counted twice
                 prevnums[ni] = 0;
