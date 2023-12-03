@@ -6,17 +6,18 @@
 # sum = 0
 # for each line
 #     for each number
-#         if the left or right adjacent character is a symbol:
-#             add num to sum
+#         if the left or right adjacent character is a gear:
+#             add num to gear hash (rowcol of gear)
 #         else if there is a symbol in previous_symbols whose extent overlaps with this numbers extent
-#             add num to sum
+#             add num to gear hash (rowcol of gear)
 #         else
 #             add num and extent to prevnums, to be used in the next loop
 #     for each symbol
 #         add symbol to prevsymbols, to be used in the next loop
 #         if symbol extent overlaps with a num on previous line (from prevnums):
-#             adds num to sum
-#             make num 0 (so it is not double counted)
+#             adds num to gear hash (rowcol to gear)
+# for each item in gear hash:
+#   add product to sum if there are two items
 # print sum
         
 
