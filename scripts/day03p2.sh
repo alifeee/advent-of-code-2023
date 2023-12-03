@@ -76,22 +76,33 @@ cat $1 | awk 'BEGIN {
         isnexttosymbol = 0;
         lastchar = substr(numseps[numindex-1], length(numseps[numindex-1]))
         nextchar = substr(numseps[numindex], 1, 1)
-        if (debug) print "   is lastchar (" lastchar ") or nextchar (" nextchar ") a *?"
-        if (lastchar == "*" || nextchar == "*") {
+        if (debug) print "   is nextchar (" nextchar ") a *?"
+        if (nextchar == "*") {
             if (debug) print "    yes!"
-            isnexttosymbol=1;
+            gear_col = iendat + 1;
+            gear_row = NR
+            gear = gear_row "," gear_col;
+            print "    found * at rowcol [" gear "]"
+            print "    adding " numarr[numindex] " to " gears_nums[gear];
+            gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
+            print "    got " gears_nums[gear];
         } else if (debug)  print "    no"
-        if (isnexttosymbol) {
-            print "    found * at rowcol [" (iendat + 1) ", " NR "]"
-            sum += numarr[numindex];
-            continue;
-        }
+        if (debug) print "   is lastchar (" lastchar ") a *?"
+        if (lastchar == "*") {
+            if (debug) print "    yes!"
+            gear_col = istartat - 1;
+            gear_row = NR
+            gear = gear_row "," gear_col
+            print "    found * at rowcol [" gear "]"
+            print "    adding " numarr[numindex] " to " gears_nums[gear];
+            gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
+            print "    got " gears_nums[gear];
+        } else if (debug)  print "    no"
         
         # symbol above adjacency check
         if (length(prevsymbols) == 0) {
             if (debug) print "   no prev symbols, continuing"
         }
-        isnearprevsymbol = 0;
         for (si=0; si<length(prevsymbols); si++) {
             if (debug) print "   is near " prevsymbols[si] " [" prevsymbols_starts[si] "-" prevsymbols_ends[si] "] ?";
             a = istartat;
@@ -100,13 +111,14 @@ cat $1 | awk 'BEGIN {
             y = prevsymbols_ends[si];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
                 if (debug) print "    yes!"
-                isnearprevsymbol = 1;
+                gear_row = NR - 1;
+                gear_col = x + 1;
+                gear = gear_row "," gear_col
+                print "    found * at rowcol [" gear "]"
+                print "    adding " numarr[numindex] " to " gears_nums[gear];
+                gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
+                print "    got " gears_nums[gear];
             } else if (debug) print "    no"
-        }
-        if (isnearprevsymbol) {
-            print "   found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
-            sum += numarr[numindex];
-            continue;
         }
 
         if (debug) print "   adding number to nextnums"
@@ -143,10 +155,13 @@ cat $1 | awk 'BEGIN {
             b = prevnums_ends[ni];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
                 if (debug) print "    yes!";
-                print "    found number on prev line, sum = " sum " + " prevnums[ni] ". Setting num to 0.";
-                sum += prevnums[ni];
-                # nullify num being counted twice
-                prevnums[ni] = 0;
+                gear_col = istartat + 1;
+                gear_row = NR;
+                gear = gear_row "," gear_col;
+                print "    found number " prevnums[ni] " on prev line. * position rowcol [" gear "]";
+                print "    adding " prevnums[ni] " to " gears_nums[gear];
+                gears_nums[gear] = gears_nums[gear] prevnums[ni] ",";
+                print "    got " gears_nums[gear];
             } else if (debug) print "    no"
         }
     }
@@ -177,5 +192,16 @@ cat $1 | awk 'BEGIN {
     delete nextnums_starts;
     delete nextnums_ends;
 } END {
-    print "\nSUM: " sum;
+    if (debug) print "gears_nums: ";
+    acc = 0;
+    for (key in gears_nums) { 
+        print key ": " gears_nums[key]
+        n_nums = patsplit(gears_nums[key], numarr, /[0-9]+/, numseps);
+
+        if (length(numarr) == 2) {
+            print " adding " numarr[1] " * " numarr[2] " = " numarr[1]*numarr[2]
+            acc += numarr[1]*numarr[2]
+        }
+    } 
+    print "total: " acc;
 }'
