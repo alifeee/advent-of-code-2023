@@ -22,7 +22,7 @@
         
 
 cat $1 | awk 'BEGIN {
-    debug = 1;
+    debug = 0;
 
     sum = 0;
 
@@ -48,16 +48,16 @@ cat $1 | awk 'BEGIN {
     delete gears_nums;
 }
 { 
-    print "\n";
-    print "> " $0;
+    if (debug) print "\n";
+    if (debug) print "> " $0;
 } {
     for (i=0; i<length(prevsymbols); i++) {
-        if (i==0) print " symbols from previous line";
-        print "  " prevsymbols[i] " (" prevsymbols_starts[i] "-" prevsymbols_ends[i] ")";
+        if (i==0) if (debug) print " symbols from previous line";
+        if (debug) print "  " prevsymbols[i] " (" prevsymbols_starts[i] "-" prevsymbols_ends[i] ")";
     }
     for (i=0; i<length(prevnums); i++) {
-        if (i==0) print " nums from previous line";
-        print "  " prevnums[i] " (" prevnums_starts[i] "-" prevnums_ends[i] ")";
+        if (i==0) if (debug) print " nums from previous line";
+        if (debug) print "  " prevnums[i] " (" prevnums_starts[i] "-" prevnums_ends[i] ")";
     }
 
     # NUMBERS
@@ -83,10 +83,10 @@ cat $1 | awk 'BEGIN {
             gear_col = iendat + 1;
             gear_row = NR
             gear = gear_row "," gear_col;
-            print "    found * at rowcol [" gear "]"
-            print "    adding " numarr[numindex] " to " gears_nums[gear];
+            if (debug) print "    found * at rowcol [" gear "]"
+            if (debug) print "    adding " numarr[numindex] " to " gears_nums[gear];
             gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
-            print "    got " gears_nums[gear];
+            if (debug) print "    got " gears_nums[gear];
         } else if (debug)  print "    no"
         if (debug) print "   is lastchar (" lastchar ") a *?"
         if (lastchar == "*") {
@@ -94,10 +94,10 @@ cat $1 | awk 'BEGIN {
             gear_col = istartat - 1;
             gear_row = NR
             gear = gear_row "," gear_col
-            print "    found * at rowcol [" gear "]"
-            print "    adding " numarr[numindex] " to " gears_nums[gear];
+            if (debug) print "    found * at rowcol [" gear "]"
+            if (debug) print "    adding " numarr[numindex] " to " gears_nums[gear];
             gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
-            print "    got " gears_nums[gear];
+            if (debug) print "    got " gears_nums[gear];
         } else if (debug)  print "    no"
         
         # symbol above adjacency check
@@ -115,10 +115,10 @@ cat $1 | awk 'BEGIN {
                 gear_row = NR - 1;
                 gear_col = x + 1;
                 gear = gear_row "," gear_col
-                print "    found * at rowcol [" gear "]"
-                print "    adding " numarr[numindex] " to " gears_nums[gear];
+                if (debug) print "    found * at rowcol [" gear "]"
+                if (debug) print "    adding " numarr[numindex] " to " gears_nums[gear];
                 gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
-                print "    got " gears_nums[gear];
+                if (debug) print "    got " gears_nums[gear];
             } else if (debug) print "    no"
         }
 
@@ -159,10 +159,10 @@ cat $1 | awk 'BEGIN {
                 gear_col = istartat + 1;
                 gear_row = NR;
                 gear = gear_row "," gear_col;
-                print "    found number " prevnums[ni] " on prev line. * position rowcol [" gear "]";
-                print "    adding " prevnums[ni] " to " gears_nums[gear];
+                if (debug) print "    found number " prevnums[ni] " on prev line. * position rowcol [" gear "]";
+                if (debug) print "    adding " prevnums[ni] " to " gears_nums[gear];
                 gears_nums[gear] = gears_nums[gear] prevnums[ni] ",";
-                print "    got " gears_nums[gear];
+                if (debug) print "    got " gears_nums[gear];
             } else if (debug) print "    no"
         }
     }
@@ -196,13 +196,13 @@ cat $1 | awk 'BEGIN {
     if (debug) print "gears_nums: ";
     acc = 0;
     for (key in gears_nums) { 
-        print key ": " gears_nums[key]
+        if (debug) print key ": " gears_nums[key]
         n_nums = patsplit(gears_nums[key], numarr, /[0-9]+/, numseps);
 
         if (length(numarr) == 2) {
-            print " adding " numarr[1] " * " numarr[2] " = " numarr[1]*numarr[2]
+            if (debug) print " adding " numarr[1] " * " numarr[2] " = " numarr[1]*numarr[2]
             acc += numarr[1]*numarr[2]
         }
     } 
-    print "total: " acc;
+    print acc;
 }'

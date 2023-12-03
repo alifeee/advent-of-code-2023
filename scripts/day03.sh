@@ -21,7 +21,7 @@
         
 
 cat $1 | awk 'BEGIN {
-    debug = 1;
+    debug = 0;
 
     sum = 0;
 
@@ -43,16 +43,16 @@ cat $1 | awk 'BEGIN {
     delete nextnums_ends;
 }
 { 
-    print "\n";
-    print "> " $0;
+    if (debug) print "\n";
+    if (debug) print "> " $0;
 } {
     for (i=0; i<length(prevsymbols); i++) {
-        if (i==0) print " symbols from previous line";
-        print "  " prevsymbols[i] " (" prevsymbols_starts[i] "-" prevsymbols_ends[i] ")";
+        if (i==0) if (debug) print " symbols from previous line";
+        if (debug) print "  " prevsymbols[i] " (" prevsymbols_starts[i] "-" prevsymbols_ends[i] ")";
     }
     for (i=0; i<length(prevnums); i++) {
-        if (i==0) print " nums from previous line";
-        print "  " prevnums[i] " (" prevnums_starts[i] "-" prevnums_ends[i] ")";
+        if (i==0) if (debug) print " nums from previous line";
+        if (debug) print "  " prevnums[i] " (" prevnums_starts[i] "-" prevnums_ends[i] ")";
     }
 
     # NUMBERS
@@ -78,7 +78,7 @@ cat $1 | awk 'BEGIN {
             isnexttosymbol=1;
         } else if (debug)  print "    no"
         if (isnexttosymbol) {
-            print "    found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
+            if (debug) print "    found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
             sum += numarr[numindex];
             continue;
         }
@@ -99,7 +99,7 @@ cat $1 | awk 'BEGIN {
             } else if (debug) print "    no"
         }
         if (isnearprevsymbol) {
-            print "   found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
+            if (debug) print "   found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
             sum += numarr[numindex];
             continue;
         }
@@ -138,7 +138,7 @@ cat $1 | awk 'BEGIN {
             b = prevnums_ends[ni];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
                 if (debug) print "    yes!";
-                print "    found number on prev line, sum = " sum " + " prevnums[ni] ". Setting num to 0.";
+                if (debug) print "    found number on prev line, sum = " sum " + " prevnums[ni] ". Setting num to 0.";
                 sum += prevnums[ni];
                 # nullify num being counted twice
                 prevnums[ni] = 0;
@@ -172,5 +172,5 @@ cat $1 | awk 'BEGIN {
     delete nextnums_starts;
     delete nextnums_ends;
 } END {
-    print "\nSUM: " sum;
+    print sum;
 }'
