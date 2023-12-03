@@ -2,6 +2,24 @@
 
 # https://adventofcode.com/2023/day/3
 
+# psuedocode
+# sum = 0
+# for each line
+#     for each number
+#         if the left or right adjacent character is a symbol:
+#             add num to sum
+#         else if there is a symbol in previous_symbols whose extent overlaps with this numbers extent
+#             add num to sum
+#         else
+#             add num and extent to prevnums, to be used in the next loop
+#     for each symbol
+#         add symbol to prevsymbols, to be used in the next loop
+#         if symbol extent overlaps with a num on previous line (from prevnums):
+#             adds num to sum
+#             make num 0 (so it is not double counted)
+# print sum
+        
+
 cat $1 | awk 'BEGIN {
     debug = 1;
 
