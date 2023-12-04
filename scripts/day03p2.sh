@@ -6,19 +6,24 @@
 # sum = 0
 # for each line
 #     for each number
+#         if the left or right adjacent character is a symbol:
+#             add num to part 1 sum
 #         if the left or right adjacent character is a gear:
 #             add num to gear hash (rowcol of gear)
 #         else if there is a symbol in previous_symbols whose extent overlaps with this numbers extent
+#             add num to part 1 sum
 #             add num to gear hash (rowcol of gear)
 #         else
 #             add num and extent to prevnums, to be used in the next loop
 #     for each symbol
 #         add symbol to prevsymbols, to be used in the next loop
 #         if symbol extent overlaps with a num on previous line (from prevnums):
+#             adds num to part 1 sum
 #             adds num to gear hash (rowcol to gear)
 # for each item in gear hash:
 #   add product to sum if there are two items
-# print sum
+# print part 1 sum
+# print part 2 sum
         
 
 cat $1 | awk 'BEGIN {
@@ -99,11 +104,21 @@ cat $1 | awk 'BEGIN {
             gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
             if (debug) print "    got " gears_nums[gear];
         } else if (debug)  print "    no"
-        
+        if (debug) print "   is lastchar (" lastchar ") or nextchar (" nextchar ") symbolic?"
+        if ((lastchar != "." && lastchar != "") || (nextchar != "." && nextchar != "")) {
+            if (debug) print "    yes!"
+            isnexttosymbol=1;
+        } else if (debug)  print "    no"
+        if (isnexttosymbol) {
+            if (debug) print "    found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
+            sum += numarr[numindex];
+        }
+
         # symbol above adjacency check
         if (length(prevsymbols) == 0) {
             if (debug) print "   no prev symbols, continuing"
         }
+        isnearprevsymbol = 0;
         for (si=0; si<length(prevsymbols); si++) {
             if (debug) print "   is near " prevsymbols[si] " [" prevsymbols_starts[si] "-" prevsymbols_ends[si] "] ?";
             a = istartat;
@@ -112,14 +127,21 @@ cat $1 | awk 'BEGIN {
             y = prevsymbols_ends[si];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
                 if (debug) print "    yes!"
-                gear_row = NR - 1;
-                gear_col = x + 1;
-                gear = gear_row "," gear_col
-                if (debug) print "    found * at rowcol [" gear "]"
-                if (debug) print "    adding " numarr[numindex] " to " gears_nums[gear];
-                gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
-                if (debug) print "    got " gears_nums[gear];
+                isnearprevsymbol = 1;
+                if (prevsymbols[si] == "*") {
+                    gear_row = NR - 1;
+                    gear_col = x + 1;
+                    gear = gear_row "," gear_col
+                    if (debug) print "    found * at rowcol [" gear "]"
+                    if (debug) print "    adding " numarr[numindex] " to " gears_nums[gear];
+                    gears_nums[gear] = gears_nums[gear] numarr[numindex] ",";
+                    if (debug) print "    got " gears_nums[gear];
+                }
             } else if (debug) print "    no"
+        }
+        if (isnearprevsymbol) {
+            if (debug) print "   found symbol, sum = " sum " + " numarr[numindex] " (continuing)"
+            sum += numarr[numindex];
         }
 
         if (debug) print "   adding number to nextnums"
@@ -129,7 +151,7 @@ cat $1 | awk 'BEGIN {
     }
 
     # SYMBOLS
-    n_syms = patsplit($0, symarr, /[*]+/, symseps);
+    n_syms = patsplit($0, symarr, /[^\.0-9]+/, symseps);
     if (debug) print " " n_syms " syms found"
     acc = 1 + length(symseps[0])
     for (symindex=1; symindex <= n_syms; symindex++) {
@@ -156,13 +178,17 @@ cat $1 | awk 'BEGIN {
             b = prevnums_ends[ni];
             if ((a >= x && a <= y) || (b >= x && b <= y)) {
                 if (debug) print "    yes!";
-                gear_col = istartat + 1;
-                gear_row = NR;
-                gear = gear_row "," gear_col;
-                if (debug) print "    found number " prevnums[ni] " on prev line. * position rowcol [" gear "]";
-                if (debug) print "    adding " prevnums[ni] " to " gears_nums[gear];
-                gears_nums[gear] = gears_nums[gear] prevnums[ni] ",";
-                if (debug) print "    got " gears_nums[gear];
+                if (debug) print "    found number on prev line, sum = " sum " + " prevnums[ni] ". Setting num to 0.";
+                sum += prevnums[ni];
+                if (symarr[symindex] == "*") {
+                    gear_col = istartat + 1;
+                    gear_row = NR;
+                    gear = gear_row "," gear_col;
+                    if (debug) print "    found number " prevnums[ni] " on prev line. * position rowcol [" gear "]";
+                    if (debug) print "    adding " prevnums[ni] " to " gears_nums[gear];
+                    gears_nums[gear] = gears_nums[gear] prevnums[ni] ",";
+                    if (debug) print "    got " gears_nums[gear];
+                }
             } else if (debug) print "    no"
         }
     }
@@ -193,6 +219,7 @@ cat $1 | awk 'BEGIN {
     delete nextnums_starts;
     delete nextnums_ends;
 } END {
+    print "part 1: " sum;
     if (debug) print "gears_nums: ";
     acc = 0;
     for (key in gears_nums) { 
@@ -204,5 +231,5 @@ cat $1 | awk 'BEGIN {
             acc += numarr[1]*numarr[2]
         }
     } 
-    print acc;
+    print "part 2: " acc;
 }'
