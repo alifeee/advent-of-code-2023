@@ -6,9 +6,9 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 
 ## Other people's solutions
 
-| Check out! | these! |
+| Check out! | These! |
 | --- | --- |
-| [jedevc](https://github.com/jedevc/advent-of-code-2023/) | [lavigne958](https://github.com/lavigne958/Adventofcode2023) |
+| [`jedevc`](https://github.com/jedevc/advent-of-code-2023/) | [`lavigne958`](https://github.com/lavigne958/Adventofcode2023) |
 
 ## To run
 
@@ -20,6 +20,14 @@ Either `cat` the data file into the script file with a pipe, or give the filenam
 cat data/day1.txt | ./scripts/day01_1.sh
 # or
 ./scripts/day01_1.sh data/day1.txt
+```
+
+### All solutions at once
+
+Up to n
+
+```bash
+for i in {01..n}; do echo "day ${i}"; ./scripts/day${i}.sh ./data/day${i}.txt; done
 ```
 
 ## Measure execution time
