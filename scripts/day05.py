@@ -1,9 +1,7 @@
 """day 3 in python"""
 
 import sys
-import time
 from typing import List
-import functools
 from tqdm import tqdm
 
 
@@ -82,21 +80,31 @@ class Pipeline:
     def __init__(self, multimaps: List[MultiMap]):
         self.multimaps = multimaps
 
-    def pipe_forwards(self, num: int) -> int:
+    def pipe_forwards(self, num: int, verbose=False) -> int:
         """pipe a number through each of my maps"""
-        return functools.reduce(
-            lambda cnum, mmap: mmap.map_forwards(cnum),
-            self.multimaps,
-            num,
-        )
+        acc = num
+        if verbose is True:
+            path = f"{acc}"
+        for mmap in self.multimaps:
+            acc = mmap.map_forwards(acc)
+            if verbose is True:
+                path += f" -> {acc}"
+        if verbose is True:
+            print(path)
+        return acc
 
-    def pipe_backwards(self, num: int) -> int:
+    def pipe_backwards(self, num: int, verbose=False) -> int:
         """pipe a number through each of my maps"""
-        return functools.reduce(
-            lambda cnum, mmap: mmap.map_backwards(cnum),
-            reversed(self.multimaps),
-            num,
-        )
+        acc = num
+        if verbose is True:
+            path = f"{acc}"
+        for mmap in reversed(self.multimaps):
+            acc = mmap.map_backwards(acc)
+            if verbose is True:
+                path += f" -> {acc}"
+        if verbose is True:
+            print(path)
+        return acc
 
     def __repr__(self) -> str:
         return "[" + ", ".join([m.__repr__() for m in self.multimaps]) + "]"
@@ -134,6 +142,10 @@ class SeedBag:
     def min_seed(self) -> int:
         """get smallest seed in bag"""
         return min(sr.start for sr in self.seedranges)
+
+    def max_seed(self) -> int:
+        """get largest seed in bag"""
+        return max(sr.end for sr in self.seedranges)
 
 
 def test_single_map():
@@ -198,6 +210,35 @@ def test_multi_map():
     assert multimap.map_backwards(100) == 100
 
 
+def test_pipeline():
+    """test pipeline class"""
+
+    multimap1 = MultiMap(
+        singlemaps=[
+            SingleMap(50, 98, 2),  # [98, 99] -> [50, 51]
+            SingleMap(52, 50, 48),  # [50, 97] -> [52, 99]
+        ]
+    )
+    multimap2 = MultiMap(
+        singlemaps=[
+            SingleMap(0, 15, 37),  # [15, 51] -> [0, 36]
+            SingleMap(37, 52, 2),  # [52, 53] -> [37, 38]
+            SingleMap(39, 0, 15),  # [0, 14] -> [39, 53]
+        ]
+    )
+
+    pipeline = Pipeline([multimap1, multimap2])
+
+    assert pipeline.pipe_forwards(0) == 39
+    assert pipeline.pipe_backwards(39) == 0
+    assert pipeline.pipe_forwards(1) == 40
+    assert pipeline.pipe_backwards(40) == 1
+    assert pipeline.pipe_forwards(50) == 37
+    assert pipeline.pipe_backwards(37) == 50
+    assert pipeline.pipe_forwards(98) == 35
+    assert pipeline.pipe_backwards(35) == 98
+
+
 def test_seed_range():
     """test seed range class"""
     seedrange = SeedRange(start=79, length=14)
@@ -238,6 +279,7 @@ def main():
     test_single_map()
     test_multi_map()
     test_seed_range()
+    test_pipeline()
 
     multimaps = []
     for map_line in map_lines:
@@ -255,11 +297,6 @@ def main():
 
     pipeline = Pipeline(multimaps=multimaps)
 
-    # part 1
-    seeds = [int(ss) for ss in seed_line.split(" ")]
-    part1 = min(pipeline.pipe_forwards(seed) for seed in seeds)
-    print(f"part 1: {part1}")
-
     # part 2
     seed_strs = [int(ss) for ss in seed_line.split(" ")]
     seedranges = []
@@ -274,35 +311,42 @@ def main():
         seedranges.append(seedrange)
 
     seedbag = SeedBag(seedranges=seedranges)
-    print(f"min seed: {seedbag.min_seed()}")
-    print(f"{77896732} in bag? {seedbag.is_in_bag(77896732)}")
-    print(f"{77896731} in bag? {seedbag.is_in_bag(77896731)}")
-    print(f"seed->loc {77896732} -> {pipeline.pipe_forwards(77896732)}")
-    print(f"loc->seed {3846951716} -> {pipeline.pipe_forwards(3846951716)}")
 
-    print()
-    print("PIPELINE")
-    for multimap in pipeline.multimaps:
-        print()
-        print("multimap")
-        for singlemap in multimap.singlemaps:
-            print(singlemap)
-    return
+    # print("PIPELINE")
+    # for multimap in pipeline.multimaps:
+    #     print()
+    #     print("multimap")
+    #     for singlemap in multimap.singlemaps:
+    #         print(singlemap)
+
+    # print()
+    # print("SEEDBAG")
+    # print(seedbag)
+    # print(f"min seed: {seedbag.min_seed():_}")
+    # print(f"max seed: {seedbag.max_seed():_}")
+
+    # print()
+    # print(f"{77896732:_} in bag? {seedbag.is_in_bag(77896732)}")
+    # print(f"{77896731:_} in bag? {seedbag.is_in_bag(77896731)}")
+    # print(f"seed->loc {77896732:_} -> {pipeline.pipe_forwards(77896732):_}")
+    # print(f"loc->seed {3846951716:_} -> {pipeline.pipe_backwards(3846951716):_}")
+    # print()
+
     location = 0
-    pbar = tqdm(desc="testing locations")
-    while True:
+
+    def generator():
+        while True:
+            yield
+
+    for _ in tqdm(
+        generator(),
+        bar_format="{desc}: {percentage:.3f}%| {n:_}/{total_fmt} [{elapsed}<{remaining}",
+        total=6_082_852,
+    ):
         seed = pipeline.pipe_backwards(location)
-        # print(f"test loc->seed {location} -> {seed} in seedbag")
-        if seedbag.is_in_bag(seed):
+        if seedbag.is_in_bag(seed) is True:
             break
         location += 1
-        # time.sleep(0.1)
-        # if location % 1_000_000 == 0:
-        pbar.update(location)
-
-        print(f"seed->loc {location} -> {pipeline.pipe_forwards(location)}")
-        time.sleep(1)
-    pbar.close()
 
     print(f"part 2 {location}")
 
