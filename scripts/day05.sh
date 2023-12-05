@@ -8,20 +8,10 @@ cat $1 | sed 's/seeds: //g' | sed '2, $s/^.*: *//g' | sed '2, $s/ /:/g' | sed 's
 NR == 1 {
     print "# seeds"
     print "> " $0;
-    two_n_pairs = split($0, pairs, / /);
-    i = 1;
-    for (p=1; p<=two_n_pairs; p += 2) {
-        start = pairs[p];
-        range = pairs[p+1];
-        end = start + range;
-        print " seed descriptor! starts at " start ", range " range ", end " end ", total seeds " (end - start);
-        for (seednum=start; seednum < end; seednum += 1) {
-            olditems[i] = seednum;
-            i++;
-        }
+    n_items = split($0, seeds, / /);
+    for (i=1; i<=n_items; i++) {
+        olditems[i] = seeds[i];
     }
-    print " total seeds " length(olditems);
-    n_items = length(olditems)
 }
 NR > 1 {
     print "\n> " $0
