@@ -4,7 +4,9 @@
 
 # cat $1 | sed 's/seeds: //g' | sed '2, $s/^.*: *//g' | sed '2, $s/ /:/g' | sed '2, $s/.$/;/g' | awk ' /^$/ { print; } /./ { printf("%s", $0); } ' | awk ' /^$/ { print; } /./ { printf("%s", $0); } '
 
-cat $1 | sed 's/seeds: //g' | sed '2, $s/^.*: *//g' | sed '2, $s/ /:/g' | sed 's/\(.\)$/\1;/g' | awk ' /^$/ { print; } /./ { printf("%s", $0); } ' | awk ' /^$/ { print; } /./ { printf("%s", $0); } ' | sed 's/;$//g' | awk -F';' '
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cat $1 | sed 's/seeds: //g' | sed '2, $s/^.*: *//g' | sed '2, $s/ /:/g' | sed 's/\(.\)$/\1;/g' | awk ' /^$/ { print; } /./ { printf("%s", $0); } ' | awk ' /^$/ { print; } /./ { printf("%s", $0); } ' | sed 's/;$//g' | tee >(awk -F';' '
 BEGIN {
     debug = 0;
 }
@@ -59,4 +61,4 @@ NR > 1 {
         min = (olditems[i] < min) ? olditems[i] : min;
     }
     print "part 1: " min;
-}'
+}' > /dev/tty) | python3 "${SCRIPTPATH}/day05.py"
