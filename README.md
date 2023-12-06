@@ -10,6 +10,15 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 | --- | --- |
 | [`jedevc`](https://github.com/jedevc/advent-of-code-2023/) | [`lavigne958`](https://github.com/lavigne958/Adventofcode2023) |
 
+## My solutions
+
+Asides: I am not trying to optimise the length or execution time of my scripts further than "it works in a reasonable amount of time".
+
+| Day | Characters | Runtime |
+| --- | --- | --- |
+| 01 | 930 | <span id="01">█░░░░░░░░░░░░░░░░░░</span> |
+| 02 | 828 | <span id="02">█░░░░░░░░░░░░░░░░░░</span> |
+
 ## To run
 
 ### Bash solutions
