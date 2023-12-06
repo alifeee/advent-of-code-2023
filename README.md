@@ -14,10 +14,22 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 
 Asides: I am not trying to optimise the length or execution time of my scripts further than "it works in a reasonable amount of time".
 
-| Day | Characters | Runtime |
-| --- | --- | --- |
-| 01 | 930 | <span id="01">█░░░░░░░░░░░░░░░░░░</span> |
-| 02 | 828 | <span id="02">█░░░░░░░░░░░░░░░░░░</span> |
+| Day | Language | Chars | Runtime |
+| --- | --- | --- | --- |
+| [01] | bash | █░░░░░░░░░ 930 | <span id="01">░░░░░░░░░░░░░░░░░░░░ 0.030 s</span> |
+| [02] | bash | █░░░░░░░░░ 828 | <span id="02">░░░░░░░░░░░░░░░░░░░░ 0.020 s</span> |
+| [03] | bash | ██████░░░░ 7,954 | <span id="03">░░░░░░░░░░░░░░░░░░░░ 0.029 s</span> |
+| [04] | bash | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
+| [05] | bash + [python][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
+| [06] | bash | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
+
+[01]: ./scripts/day01.sh
+[02]: ./scripts/day02.sh
+[03]: ./scripts/day03.sh
+[04]: ./scripts/day04.sh
+[05]: ./scripts/day05.sh
+[05-py]: ./scripts/day05.sh
+[06]: ./scripts/day06.sh
 
 ## To run
 
@@ -39,7 +51,9 @@ Up to n
 for i in {01..n}; do echo "day ${i}"; ./scripts/day${i}.sh ./data/day${i}.txt; done
 ```
 
-## Measure execution time
+## Metrics
+
+### Measure execution time
 
 Use `time`, like so:
 
@@ -48,4 +62,22 @@ $ time ./scripts/day02_01.sh data/day2.txt
 real    0m0.021s
 user    0m0.016s
 sys     0m0.000s
+```
+
+### Send execution time to readme
+
+```bash
+$ ./runtime.sh 06
+
+writing ███░░░░░░░░░░░░░░░░░ (11.995 s) to day 06...
+```
+
+### Create bar chart
+
+Arguments (described in [file](./bar.sh)) are `PROGRESS`, `TOTAL`, and `NUMBER of SEGMENTS`.
+
+```bash
+$ ./bar.sh 7954 13034 10
+
+██████░░░░
 ```
