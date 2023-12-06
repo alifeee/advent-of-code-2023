@@ -16,12 +16,12 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 
 | Day | Solution | Chars | Runtime |
 | --- | --- | --- | --- |
-| [01 - Trebuchet?!] | [`bash`][01] | █░░░░░░░░░ 930 | <span id="01">░░░░░░░░░░░░░░░░░░░░ 0.030 s</span> |
-| [02 - Cube Conundrum] | [`bash`][02] | █░░░░░░░░░ 828 | <span id="02">░░░░░░░░░░░░░░░░░░░░ 0.020 s</span> |
-| [03 - Gear Ratios] | [`bash`][03] | ██████░░░░ 7,954 | <span id="03">░░░░░░░░░░░░░░░░░░░░ 0.029 s</span> |
-| [04 - Scratchcards] | [`bash`][04] | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
-| [05 - If You Give A Seed A Fertilizer] | [`bash`][05] + [`python`][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
-| [06 - Wait For It] | [`bash`][06] | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
+| [01 - Trebuchet?!] | [bash][01] | █░░░░░░░░░ 930 | <span id="01">░░░░░░░░░░░░░░░░░░░░ 0.030 s</span> |
+| [02 - Cube Conundrum] | [bash][02] | █░░░░░░░░░ 828 | <span id="02">░░░░░░░░░░░░░░░░░░░░ 0.020 s</span> |
+| [03 - Gear Ratios] | [bash][03] | ██████░░░░ 7,954 | <span id="03">░░░░░░░░░░░░░░░░░░░░ 0.029 s</span> |
+| [04 - Scratchcards] | [bash][04] | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
+| [05 - If You Give A Seed A Fertilizer] | [bash][05] + [python][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
+| [06 - Wait For It] | [bash][06] | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
 
 [01 - Trebuchet?!]: https://adventofcode.com/2023/day/1
 [01]: ./scripts/day01.sh
