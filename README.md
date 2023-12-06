@@ -14,21 +14,27 @@ My solutions for Advent of Code 2023. The language used may be anything. I start
 
 Asides: I am not trying to optimise the length or execution time of my scripts further than "it works in a reasonable amount of time".
 
-| Day | Language | Chars | Runtime |
+| Day | Solution | Chars | Runtime |
 | --- | --- | --- | --- |
-| [01] | bash | █░░░░░░░░░ 930 | <span id="01">░░░░░░░░░░░░░░░░░░░░ 0.030 s</span> |
-| [02] | bash | █░░░░░░░░░ 828 | <span id="02">░░░░░░░░░░░░░░░░░░░░ 0.020 s</span> |
-| [03] | bash | ██████░░░░ 7,954 | <span id="03">░░░░░░░░░░░░░░░░░░░░ 0.029 s</span> |
-| [04] | bash | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
-| [05] | bash + [python][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
-| [06] | bash | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
+| [01 - Trebuchet?!] | [`bash`][01] | █░░░░░░░░░ 930 | <span id="01">░░░░░░░░░░░░░░░░░░░░ 0.030 s</span> |
+| [02 - Cube Conundrum] | [`bash`][02] | █░░░░░░░░░ 828 | <span id="02">░░░░░░░░░░░░░░░░░░░░ 0.020 s</span> |
+| [03 - Gear Ratios] | [`bash`][03] | ██████░░░░ 7,954 | <span id="03">░░░░░░░░░░░░░░░░░░░░ 0.029 s</span> |
+| [04 - Scratchcards] | [`bash`][04] | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
+| [05 - If You Give A Seed A Fertilizer] | [`bash`][05] + [`python`][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
+| [06 - Wait For It] | [`bash`][06] | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
 
+[01 - Trebuchet?!]: https://adventofcode.com/2023/day/1
 [01]: ./scripts/day01.sh
+[02 - Cube Conundrum]: https://adventofcode.com/2023/day/2
 [02]: ./scripts/day02.sh
+[03 - Gear Ratios]: https://adventofcode.com/2023/day/3
 [03]: ./scripts/day03.sh
+[04 - Scratchcards]: https://adventofcode.com/2023/day/4
 [04]: ./scripts/day04.sh
+[05 - If You Give A Seed A Fertilizer]: https://adventofcode.com/2023/day/5
 [05]: ./scripts/day05.sh
 [05-py]: ./scripts/day05.sh
+[06 - Wait For It]: https://adventofcode.com/2023/day/6
 [06]: ./scripts/day06.sh
 
 ## To run
