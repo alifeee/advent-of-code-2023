@@ -22,6 +22,7 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 | [04 - Scratchcards] | [bash][04] | ░░░░░░░░░░ 467 | <span id="04">░░░░░░░░░░░░░░░░░░░░ 0.025 s</span> |
 | [05 - If You Give A Seed A Fertilizer] | [bash][05] + [python][05-py] | ██████████ 2,029 + 11,005 | <span id="05">████████████████████ 88.934 s</span> |
 | [06 - Wait For It] | [bash][06] | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
+| [07 - Camel Cards] | [bash][07] | ██░░░░░░░░ 2804 | <span id="07">░░░░░░░░░░░░░░░░░░░░ 0.098 s</span> |
 
 [01 - Trebuchet?!]: https://adventofcode.com/2023/day/1
 [01]: ./scripts/day01.sh
@@ -36,6 +37,8 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 [05-py]: ./scripts/day05.sh
 [06 - Wait For It]: https://adventofcode.com/2023/day/6
 [06]: ./scripts/day06.sh
+[07 - Camel Cards]: https://adventofcode.com/2023/day/7
+[07]: ./scripts/day07.sh
 
 ## To run
 
