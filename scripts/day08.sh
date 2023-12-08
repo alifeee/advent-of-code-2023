@@ -2,12 +2,13 @@
 
 # https://adventofcode.com/2023/day/8
 
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
 cat $1 | awk ' /^$/ { print } /./ { printf "%s;", $0 }' | tee >(awk -F';' 'BEGIN {
     debug = 0;
 } NR == 1 {
     split($1, directions, "");
 } NR == 2 {
-    next
     # generate map 
     for (line=1; line <= NF; line++) {
         from = substr($line, 0, 3);
@@ -55,38 +56,28 @@ cat $1 | awk ' /^$/ { print } /./ { printf "%s;", $0 }' | tee >(awk -F';' 'BEGIN
     acc = 0;
     direcindex = 0;
     patsplit($0, nextlocs, /(..A) = /);
-    print "nextlocs"
     for (l in nextlocs) {
         nextlocs[l] = substr(nextlocs[l], 0, 3);
-        print " " nextlocs[l];
     }
 
-    print "loop"
-    while (1) {
-        hasz = 1;
-        for (l in nextlocs) {
-            hasz = hasz && (substr(nextlocs[l], 3) == "Z");
-        }
-        if (hasz) {
-            next;
-        }
+    for (l in nextlocs) {
+        nextloc = nextlocs[l];
+        acc = 0;
+        tooktoz = 0;
+        while (1) {
+            if (substr(nextloc, 3) == "Z") {
+                if (!tooktoz) {
+                    tooktoz = acc;
+                } else break;
+            }
+            acc += 1;
+            direcindex += 1;
+            if (direcindex > length(directions)) direcindex -= length(directions);
 
-        acc += 1;
-        if (debug) print acc;
-        direcindex += 1;
-        if (direcindex > length(directions)) direcindex -= length(directions);
-
-        direction = directions[direcindex];
-        
-        for (l in nextlocs) {
-            # print nextlocs[l] direction;
-            nextlocs[l] = map[nextlocs[l] direction]
+            direction = directions[direcindex];
+            nextloc = map[nextloc direction]
         }
-
-        if (acc % 1000000 == 0) {
-            printf "\r%s", acc;
-        }
+        # print nextlocs[l] " took " tooktoz " to get to Z and then " (acc - tooktoz) " til the next z"
+        print tooktoz
     }
-} END {
-    print "part 2: " acc;
-}'
+}' | python3 "${SCRIPTPATH}/day08.py"
