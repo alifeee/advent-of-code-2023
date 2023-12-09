@@ -24,6 +24,7 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 | [06 - Wait For It] | [bash][06] | ░░░░░░░░░░ 474 | <span id="06">███░░░░░░░░░░░░░░░░░ 11.995 s</span> |
 | [07 - Camel Cards] | [bash][07] | ██░░░░░░░░ 2804 | <span id="07">░░░░░░░░░░░░░░░░░░░░ 0.098 s</span> |
 | [08 - Haunted Wasteland] | [bash][08] + [python][08-py] | ██░░░░░░░ 2092 + 158 | <span id="08">░░░░░░░░░░░░░░░░░░░░ 0.099 s</span> |
+| [09 - Mirage Maintenance] | [bash][09] | ██░░░░░░░░ 2300 | <span id="09">░░░░░░░░░░░░░░░░░░░░ 0.168 s</span> |
 
 [01 - Trebuchet?!]: https://adventofcode.com/2023/day/1
 [01]: ./scripts/day01.sh
@@ -43,6 +44,8 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 [08 - Haunted Wasteland]: https://adventofcode.com/2023/day/8
 [08]: ./scripts/day08.sh
 [08-py]: ./scripts/day08.py
+[09 - Mirage Maintenance]: https://adventofcode.com/2023/day/9
+[09]: ./scripts/day09.sh
 
 ## To run
 
