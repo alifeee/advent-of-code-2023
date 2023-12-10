@@ -5,6 +5,7 @@
 cat $1 | awk 'BEGIN { 
     debug = 0;
     delete pipes;
+    delete loop;
 } {
     row = NR;
     split($0, arr, "");
@@ -15,6 +16,9 @@ cat $1 | awk 'BEGIN {
         }
         pipes[row";"col] = arr[col];
     }
+
+    ROWS += 1;
+    COLUMNS = length(arr)
 } END {
     # print pipes["140;138"];
     aboveS = pipes[(srow-1)";"(scol  )];
@@ -29,19 +33,29 @@ cat $1 | awk 'BEGIN {
     if (match(aboveS, /\||7|F/)) {
         nextrow = srow - 1;
         nextcol = scol;
-    } else if (match(rightS, /7|-|J/)) {
+        above = 1;
+    } if (match(rightS, /7|-|J/)) {
         nextrow = srow;
         nextcol = scol + 1;
-    } else if (match(belowS, /L|\||J/)) {
+        right = 1;
+    } if (match(belowS, /L|\||J/)) {
         nextrow = srow + 1;
         nextcol = scol;
+        below = 1;
+    } if (match(leftS, /F|-|L/)) {
+        nextrow = srow;
+        nextcol = scol - 1;
+        left = 1;
     }
 
     currentrow = srow;
     currentcol = scol;
     currentval = "S";
     steps = 0;
+    # follow loop
     while (1) {
+        if (debug) print "adding " currentrow";"currentcol " -> " currentval " to loop";
+        loop[currentrow";"currentcol] = currentval;
         if (currentrow == nextrow) {
             if (nextcol > currentcol) {direc = "right"}
             else {direc = "left"}
@@ -108,4 +122,50 @@ cat $1 | awk 'BEGIN {
     }
     if (debug) print "found S again after " steps " steps :)";
     print "part 1: " steps / 2;
+
+    # replace S with pipe segment...
+    if (above && right) {
+        replaceS = "L";
+    } else if (above && below) {
+        replaceS = "|";
+    } else if (above && left) {
+        replaceS = "J";
+    } else if (right && below) {
+        replaceS = "F";
+    } else if (right && left) {
+        replaceS = "-";
+    } else if (below && left) {
+        replaceS = "7"
+    }
+    loop[srow";"scol] = replaceS;
+
+    insides = 0;
+    for (row=1; row<=ROWS; row++) {
+        for (col=1; col<=COLUMNS; col++) {
+            if ((row";"col) in loop) {
+                continue
+            }
+            parity = 0;
+            for (trycol=1; trycol<col; trycol++) {
+                # printf "%s ", trycol;
+                segment = loop[row";"trycol];
+                if (segment == "|") {
+                    parity += 1;
+                } else if (segment == "L" || segment == "7") {
+                    parity += 1/2;
+                } else if (segment == "F" || segment == "J") {
+                    parity -= 1/2;
+                }
+            }
+            if ((parity % 2) == 0) {
+                if (debug) print "even, outside loop";
+            } else if ((parity % 2 == 1) || (parity % 2 == -1)) {
+                if (debug) print "odd, inside loop";
+                insides += 1;
+            } else {
+                print "problem :/ - parity=" parity;
+            }
+        }
+    }
+    print "part 2: " insides;
 }'
