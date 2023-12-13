@@ -27,6 +27,7 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 | [09 - Mirage Maintenance] | [bash][09] | ██░░░░░░░░ 2300 | <span id="09">░░░░░░░░░░░░░░░░░░░░ 0.168 s</span> |
 | [10 - Pipe Maze] | [bash][10] | ████░░░░░░ 5052 | <span id="10">░░░░░░░░░░░░░░░░░░░░ 0.240 s</span> |
 | [11 - Cosmic Expansion] | [bash][11] | ██░░░░░░░░ 2242 | <span id="11">░░░░░░░░░░░░░░░░░░░░ 1.696 s</span> |
+| [12 - Hot Springs] | not solved | not solved | not solved |
 
 [01 - Trebuchet?!]: https://adventofcode.com/2023/day/1
 [01]: ./scripts/day01.sh
@@ -52,6 +53,7 @@ Asides: I am not trying to optimise the length or execution time of my scripts f
 [10]: ./scripts/day10.sh
 [11 - Cosmic Expansion]: https://adventofcode.com/2023/day/11
 [11]: ./scripts/day11.sh
+[12 - Hot Springs]: https://adventofcode.com/2023/day/12
 
 ## To run
 
