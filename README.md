@@ -1,3 +1,5 @@
+> [!CAUTION]
+> MOVED! see <https://git.alifeee.net/advent-of-code-2023/about/>
 # Advent of Code 2023
 
 My solutions for Advent of Code 2023. The language used may be anything. I started with `sh`. I don't know why. The final files have not been cleaned; there is a lot of commented experimentation (especially in the `sh` files).
